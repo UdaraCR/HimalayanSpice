@@ -1,1 +1,1 @@
-Himalayan Spice
+Nepali Mart
