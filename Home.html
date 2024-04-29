@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="pngs/Cart.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himalayan_Spice</title>
+	<link rel="stylesheet" href="styles/style.css">
+    
+</head>
+<body>
+    <header>
+        <h2>&#127860; HIMALAYAN SPICE </h2>
+        <nav class="navigation">           
+            <a href="Home.html"><button>Home</button></a>
+            <a href="About.html"><button>About</button></a>
+            <a href="Contact.html"><button>Contact</button></a>
+        </nav>
+    </header><br>
+
+    <div class="welcome">
+        <h1>Welcome to Himalayan Spice</h1><br>
+    </div>
+    <div class="intro">
+        <p>Welcome to "Himalayan Spice," where each bite embodies the flavours of Nepal. Our restaurant, tucked away in the centre of Birmingham, welcomes you to embark on a gastronomic expedition across the breathtaking Himalayas. Our menu embodies Nepali cuisine from its foothills to its peaks, incorporating traditional recipes and fragrant spices that have been passed down through the years. Our kitchen is prepared to satisfy your cravings for comfort food such as steaming bowls of dal bhat, freshly prepared momos, or the warmth of hearty curries. Enter "Himalayan Spice" to discover vivid  hues, mouthwatering flavours, and gracious hospitality that characterise Nepalese cuisine.</p>
+    </div>
+
+    <!-- Product categories -->
+    <div class="categories">
+        <button onclick="showProducts('main')">Main/Sides</button>
+        <button onclick="showProducts('soups')">Soups</button>
+        <button onclick="showProducts('currys')">Currys</button>
+    </div>
+
+    <!-- Product listing -->
+    <div id="products" class="product-list"></div>
+
+    <!-- Shopping basket -->
+    <div id="basket" class="basket">
+        <h2>Shopping Basket</h2>
+        <ul id="basket-items"></ul>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+
+        { id: 1, name: 'Aloo Roti', category: 'main', price: 1.99, image: 'pngs/AlooRoti.png'},
+        { id: 2, name: 'Momo', category: 'main', price: 5.99, image: 'pngs/Momo.png' },
+        { id: 3, name: 'Fried Rice', category: 'main', price: 8.99, image: 'pngs/FriedRice.png' },
+        { id: 4, name: 'Noodles', category: 'main', price: 8.99, image: 'pngs/Noodles.png' },
+        { id: 5, name: 'Dhal Bhat', category: 'main', price: 10.99, image: 'pngs/DhalBhat.png' },
+        { id: 6, name: 'Samosa', category: 'main', price: 1.50, image: 'pngs/Samosa.png' },
+
+        
+        { id: 7, name: 'Chicken Soup', category: 'soups', price: 7.99, image: 'pngs/ChickenSoup.png' },
+        { id: 8, name: 'Vegan Soup', category: 'soups', price: 6.99, image: 'pngs/VeganSoup.png' },
+        { id: 9, name: 'Sherpa Noodle Soup', category: 'soups', price: 9.99, image: 'pngs/SherpaSoup.png' },
+
+        
+        { id: 10, name: 'Rajma Curry', category: 'currys', price: 4.99, image: 'pngs/RajmaCurry.png' },
+        { id: 11, name: 'Dhal Curry', category: 'currys', price: 4.99, image: 'pngs/DhalCurry.png' },
+        { id: 12, name: 'Chicken Curry', category: 'currys', price: 4.99, image: 'pngs/ChickenCurry.png' },
+        { id: 13, name: 'Beef Curry', category: 'currys', price: 4.99, image: 'pngs/BeefCurry.png' },
+
+        ];
+
+        // Initialize local storage
+        const basketItems = JSON.parse(localStorage.getItem('basket')) || [];
+
+        // Display products based on category
+        function showProducts(category) {
+            const filteredProducts = products.filter(p => p.category === category);
+            const productContainer = document.getElementById('products');
+            productContainer.innerHTML = '';
+            filteredProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+				<img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Price: £${product.price.toFixed(2)}</p>
+                    <button onclick="addToBasket(${product.id})">Add to Basket</button>
+                `;
+                productContainer.appendChild(productDiv);
+            });
+        }
+
+        // Add product to basket
+        function addToBasket(productId) {
+            const product = products.find(p => p.id === productId);
+            basketItems.push(product);
+            localStorage.setItem('basket', JSON.stringify(basketItems));
+            updateBasketDisplay();
+        }
+
+        // Update basket display including total amount
+        function updateBasketDisplay() {
+            const basketItemsList = document.getElementById('basket-items');
+            basketItemsList.innerHTML = '';
+            
+            let totalAmount = 0; // Initialize total amount variable
+            
+            basketItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - £${item.price.toFixed(2)}`;
+                basketItemsList.appendChild(li);
+                
+                totalAmount += item.price; // Add item price to total amount
+            });
+
+            // Display total amount
+            const totalLi = document.createElement('li');
+            totalLi.textContent = `Total: £${totalAmount.toFixed(2)}`;
+            basketItemsList.appendChild(totalLi);
+        }
+        
+		// Function to redirect to payment page
+        function redirectToPayment() {
+            // Redirect to the payment page
+            window.location.href = 'Payment.html';
+        }
+
+        // Updated checkout function
+        function checkout() {
+            // Perform checkout process
+            // For demonstration, here's an alert message
+            alert('Thank you for your order! Redirecting to payment page.');
+            localStorage.removeItem('basket');
+            basketItems.length = 0;
+            // Redirect to payment page
+            redirectToPayment();
+        }
+
+        // Initial setup
+        showProducts('main');
+        updateBasketDisplay();
+
+        
+    </script>
+    <br><br>
+
+    <footer>
+        <p>HimalyanSpice &copy; LTD 2024</p>
+    </footer>
+</body>
+</html>
