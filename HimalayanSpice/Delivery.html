@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="pngs/Cart.png">
+    <title>Delivery Form</title>
+	<link rel="stylesheet" href="styles/styledelivery.css">
+</head>
+<body>
+   <header>
+        <h2>&#127860; HIMALAYAN SPICE </h2>
+    </header>
+        <div class="form-box">
+            <h2>Delivery Info.</h2>
+        
+            <form id="DeliveryForm" action="Delivery.html" method="POST">
+                <div class="input-box">                   
+                    <label>Post Code</label>    
+                    <input type="text" required>
+                </div>
+    
+                <div class="input-box">
+                    <label>House No.</label>  
+                    <input type="integer" required>  
+                </div>
+                
+                <div class="input-box">
+                    <label>Street Name</label>
+                    <input type="text" required>
+                </div>
+    
+                <div class="input-box">
+                    <label>City</label>
+                    <input type="text" required>
+                </div>  
+
+                <div class="input-box">
+                    <label>Country</label>
+                    <input type="text" required>
+                </div>  
+                
+                <div class="input-box">
+                    <button type="submit" class="btn">Delivery to This Address</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <h1>Thank you for your Order!</h1>
+                <p>Your order will be prepared promptly. Rest assured, we'll notify you once it's en route.</p>
+            </div>
+        </div>
+    
+        <script>
+            var modal = document.getElementById("myModal");
+            var form = document.getElementById("DeliveryForm");
+            
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); 
+                modal.style.display = "flex"; 
+    
+        setTimeout(function() {
+            window.location.href = "Home.html"; 
+        }, 3000);
+    });
+    
+    window.addEventListener("click", function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+            
+        </script>
+
+        <footer>
+            <p>HimalyanSpice &copy; LTD 2024</p>
+        </footer>
+
+</body>
+</html>
+
