@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="pngs/Cart.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepali Mart</title>
+	<link rel="stylesheet" href="styles/style.css">
+    
+</head>
+<body>
+    <header>
+        <h2>Nepali Mart  &#9885;</h2>
+        <nav class="navigation">           
+            <a href="Home.html"><button>Home</button></a>
+            <a href="About.html"><button>About</button></a>
+            <a href="Contact.html"><button>Contact</button></a>
+        </nav>
+    </header><br>
+
+    <div class="welcome">
+        <h1>Welcome to Nepali Mart</h1><br>
+    </div>
+
+    <!-- Product categories -->
+    <div class="categories">
+        <button onclick="showProducts('shoes')">Shoes</button>
+        <button onclick="showProducts('clothes')">Clothes</button>
+        <button onclick="showProducts('electro')">Electronics</button>
+    </div>
+
+    <!-- Product listing -->
+    <div id="products" class="product-list"></div>
+
+    <!-- Shopping basket -->
+    <div id="basket" class="basket">
+        <h2>Shopping Basket</h2>
+        <ul id="basket-items"></ul>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+
+        { id: 1, name: 'Sneaker', category: 'shoes', price: 49.99, image: 'pngs/sneaker.png'},
+        { id: 2, name: 'Safety Shoes', category: 'shoes', price: 89.99, image: 'pngs/SafetyShoes.png' },
+        { id: 3, name: 'Hiking Shoes', category: 'shoes', price: 112.99, image: 'pngs/HikingShoes.png' },
+
+        { id: 4, name: 'Jeans', category: 'clothes', price: 20.50, image: 'pngs/Jeans.png' },
+        { id: 5, name: 'Shirt', category: 'clothes', price: 10.99, image: 'pngs/Shirt.png' },
+        { id: 6, name: 'Hoodies', category: 'clothes', price: 35.50, image: 'pngs/Hoodies.png' },
+      
+        { id: 7, name: 'Mobile Phone', category: 'electro', price: 899.99, image: 'pngs/MobilePhone.png' },
+        { id: 8, name: 'Tv', category: 'electro', price: 2099.99, image: 'pngs/Tv.png' },
+        { id: 9, name: 'Laptop', category: 'electro', price: 1299.99, image: 'pngs/Laptop.png' },
+
+        ];
+
+        // Initialize local storage
+        const basketItems = JSON.parse(localStorage.getItem('basket')) || [];
+
+        // Display products based on category
+        function showProducts(category) {
+            const filteredProducts = products.filter(p => p.category === category);
+            const productContainer = document.getElementById('products');
+            productContainer.innerHTML = '';
+            filteredProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+				<img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Price: £${product.price.toFixed(2)}</p>
+                    <button onclick="addToBasket(${product.id})">Add to Basket</button>
+                `;
+                productContainer.appendChild(productDiv);
+            });
+        }
+
+        // Add product to basket
+        function addToBasket(productId) {
+            const product = products.find(p => p.id === productId);
+            basketItems.push(product);
+            localStorage.setItem('basket', JSON.stringify(basketItems));
+            updateBasketDisplay();
+        }
+
+        // Update basket display including total amount
+        function updateBasketDisplay() {
+            const basketItemsList = document.getElementById('basket-items');
+            basketItemsList.innerHTML = '';
+            
+            let totalAmount = 0; // Initialize total amount variable
+            
+            basketItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - £${item.price.toFixed(2)}`;
+                basketItemsList.appendChild(li);
+                
+                totalAmount += item.price; // Add item price to total amount
+            });
+
+            // Display total amount
+            const totalLi = document.createElement('li');
+            totalLi.textContent = `Total: £${totalAmount.toFixed(2)}`;
+            basketItemsList.appendChild(totalLi);
+        }
+        
+		// Function to redirect to payment page
+        function redirectToPayment() {
+            // Redirect to the payment page
+            window.location.href = 'Payment.html';
+        }
+
+        // Updated checkout function
+        function checkout() {
+            // Perform checkout process
+            // For demonstration, here's an alert message
+            alert('Thank you for your order! Redirecting to payment page.');
+            localStorage.removeItem('basket');
+            basketItems.length = 0;
+            // Redirect to payment page
+            redirectToPayment();
+        }
+
+        // Initial setup
+        showProducts('shoes');
+        updateBasketDisplay();
+
+        
+    </script>
+    <br><br>
+
+    <footer>
+        <p>NepaliMart &copy; LTD 2024</p>
+    </footer>
+</body>
+</html>
